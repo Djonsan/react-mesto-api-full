@@ -5,5 +5,5 @@
 Репозиторий для приложения проекта Mesto, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории backend/, а фронтенд - в frontend/. В этом интерактивном приложении делятся фотографиями, удаляют их и ставят лайки. 
 
 ## Ссылки:
-- Frontend: https://ia-stepanov.nomoredomains.xyz/
-- Backend: https://api.ia-stepanov.nomoredomains.work/
+- Frontend: https://djonsan.cohort-42.nomoredomains.sbs/
+- Backend: https://api.djonsan.cohort-42.nomoredomains.sbs/
