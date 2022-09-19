@@ -1,77 +1,36 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import PopupWithForm from './PopupWithForm';
+import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup(props) {
-  const inputRef = React.useRef();
+  const ref = React.useRef();
 
   function handleSubmit(evt) {
-    evt.preventDefault(evt);
-    props.onUpdateAvatar(inputRef.current.value);
-  };
+    evt.preventDefault();
 
-// очищаем поля
- useEffect(() => {
-    inputRef.current.value = '';
+    props.onSubmit({
+      avatar: ref.current.value
+    });
+  }
+
+  React.useEffect(() => {
+    ref.current.value = '';
   }, [props.isOpen]);
 
-  // валидация полей формы
-  const[link, setLink] = useState('');
-  const[linkDirty, setLinkDirty] = useState('');
-  const[linkError, setLinkError] = useState('Поле не может быть пустым');
-
-  const blurHandler = (e) =>{
-    switch(e.target.name){
-      case 'avatar-src':
-        setLinkDirty(true);
-        break
-    }
-  }
-  const linkHandler = (e) =>{
-    setLink(e.target.value)
-    const re = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/;
-    if (!re.test(String(e.target.value).toLowerCase())){
-      setLinkError('Не корректная ссылка на картинку')
-    } else {
-      setLinkError('')
-    }
-  }
-
-  return (
-    <PopupWithForm
-      name="new-avatar"
-      title="Обновить аватар"
-      button="profile"
-      buttonText={
-        props.IsSubmit
-        ? 'Сохранить...'
-        : 'Сохранить'
-      }
+  return(
+    <PopupWithForm 
       isOpen={props.isOpen}
+      onCloseClick={props.onCloseClick}
       onClose={props.onClose}
+      name={'avatar'}
+      form={'placeData'}
+      title={'Обновить аватар'}
+      buttonText={'Сохранить'}
       onSubmit={handleSubmit}
     >
-      <div className="form__field">
-        <input
-          placeholder="ссылка на изображение аватара"
-          type="url"
-          id="avatar-input"
-          className="popup__input popup__input_avatar-img"
-          name="avatar-src"
-          required
-          ref={inputRef}
-
-          onChange={e => {
-            linkHandler(e)
-          }}
-          onBlur={e => blurHandler(e)}
-          value={link}          
-        />
-        {(linkDirty && linkError) && <span className="popup__input-error place-title-input-error">{linkError}</span>}
-      </div>
+      <input ref={ref} className="popup__input" id="avatar_link" name="avatar_link" type="url" placeholder="Ссылка на аватар" required/>
+      <span className="popup__input-error" id="avatar_link-error"/>
     </PopupWithForm>
   )
-
 }
 
 export default EditAvatarPopup;

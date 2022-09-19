@@ -1,96 +1,33 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import InfoTooltip from './InfoTooltip'
-import CurrentUserContext from '../contexts/CurrentUserContext';
-import * as auth from '../utils/auth';
+import { useState } from "react";
 
+function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // Подписываемся на контекст CurrentUserContext
-  // const currentUser = React.useContext(CurrentUserContext);
+  function handleMailInput(evt) {
+    setEmail(evt.target.value);
+  }
 
-  const Login = ({ handleLogin }) => {
-    const [userData, setUserState] = useState({
-      // password: '',
-      // email: '',
-      password: 'dsfsdfsdfsdf',
-      email: 'bbb@email.ru',
-    });
-    
-    const [message, setMessage ] = useState('')
-    const { email, password } = userData
+  function handlePasswordInput(evt) {
+    setPassword(evt.target.value);
+  }
 
-    function handleChange(e) {
-      const {name, value} = e.target;
-      setUserState({
-        ...userData,
-        [name]: value
-      });
-    }
-    function handleSubmit(e){
-      e.preventDefault();
-      if (!email || !password){
-        return;
-      }
-      handleLogin(email, password)
-    }
-
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    props.onLogin(email, password);
+  }
 
   return (
-    <div className="sign-up">
-
-      <p className="login__error">
-        {message}
-      </p>
-
-      <form
-          className="form popup__form popup__form_inverse form__sign-up"
-          title='Авторизация'
-          name='form-registration'
-          onSubmit={handleSubmit}
-        >
-      <div>
-        <h2 className="page-title popup__page-title  text-overflow text-center">Вход (Авторизация)</h2>
-        <div className="form__field">
-          <input 
-              id="mail-input" 
-              required 
-              name="email" 
-              type="text"
-              placeholder="E-mail" 
-              className="popup__input popup__input_mail" 
-              minLength="2" 
-              maxLength="30" 
-              value={email} 
-              onChange={handleChange} 
-          />
-          <span className="popup__input-error place-title-input-error"></span>
-        
-        </div>
-        <div className="form__field">
-          <input 
-            id="pass-input" 
-            required 
-            name="password" 
-            type="password" 
-            placeholder="Пароль" 
-            className="popup__input popup__input_pass" 
-            value={password} 
-            onChange={handleChange} 
-          />
-        <span className="popup__input-error place-title-input-error"></span>
-        </div>
-      </div>
-      <div className="form__field m-0">
-        <button 
-          className="popup__btn"
-          name="btn"
-          type="submit"
-        >Войти</button>
-      </div>
-    </form> 
-   
-    </div>
+    <>
+      <section className="login">
+        <h2 className="login__title">Вход</h2>
+        <form className="login__form" onSubmit={handleSubmit}>
+          <input className="login__input" type="email" placeholder="Email" value={email} onChange={handleMailInput} required/>
+          <input className="login__input" type="password" placeholder="Пароль" value={password} autoComplete="on" onChange={handlePasswordInput} required/>
+          <button className="login__btn" type="submit">Войти</button>
+        </form>
+      </section>
+    </>
   );
 }
 

@@ -1,37 +1,16 @@
-import React from 'react';
-
 function PopupWithForm(props) {
-
   return (
-
-    <div className={`${props.name}`}>
-        <div className={`popup ${props.name}__popup  ${props.isOpen && "popup_opened"}`}>
-            <div className="popup__overlay" onClick={props.onClose}></div>
-            <div className="popup__container">
-                <form className="form popup__form"
-                    name={`${props.name}`}
-                    onSubmit={props.onSubmit}
-                    // noValidate
-                    >
-                    <button 
-                        className={`popup__close popup__close_${props.name}`}
-                        type="button"
-                        onClick={props.onClose}
-                        >
-                        </button>
-                    <h2 className="page-title popup__page-title  text-overflow">{props.title}</h2>
-
-                    {props.children}
-                    
-                    <button className="popup__btn"
-                        name="btn"
-                        type="submit">{props.buttonText}</button>
-                </form>
-            </div>
-        </div>
+    <div className={`popup popup_form_${props.name} ${props.isOpen ? 'popup_opened': ''}`} onMouseDown={props.onCloseClick}>
+      <div className="popup__container">
+        <form className="popup__form" name={props.form} onSubmit={props.onSubmit}>
+          <h2 className="popup__title">{props.title}</h2>
+          {props.children}
+          <button className="popup__btn-save" type="submit" title="Сохранить">{props.buttonText}</button>
+        </form>
+        <button className="popup__btn-close" type="button" title="Закрыть" onClick={props.onClose}/>
+      </div>
     </div>
-    
-  );
+  )
 }
 
 export default PopupWithForm;

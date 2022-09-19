@@ -1,60 +1,41 @@
 export const BASE_URL = 'https://api.djonsan.cohort-42.nomoredomains.sbs/';
 
-const handleResponse = response => {
-if (response.ok) { 
-  return response.json();
-}
-
-return Promise.reject(`Ошибка ${response.status}`);
-};
-
-//Функция регистрация пользователя
-export const register = (email, password) => {
-
+export function registerUser(email, password) {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({email, password})
-  })
-  .then(handleResponse);
-};
+    body: JSON.stringify({ email, password }),
+  }).then(checkRes);
+}
 
-//Функция авторизация пользователя
-export const authorize = (email, password) => {
-
+export function loginUser(email, password) {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({email, password})
-  })
-  .then(handleResponse);
-};
-
-export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization" : `Bearer ${token}`
-    }
-  })
-    .then(handleResponse)
+    body: JSON.stringify({ email, password }),
+  }).then(checkRes);
 }
 
-export const getContent = (token) => {
+export function getToken(jwt) {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      "Authorization" : `Bearer ${token}`
-    }
-  })
-  .then(res => res.json())
-  .then(data => data)
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`,
+    },
+  }).then(checkRes);
+}
+
+function checkRes(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status);
 }

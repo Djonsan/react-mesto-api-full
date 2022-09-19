@@ -1,120 +1,110 @@
-
-const handleError = res => {
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Ошибка ${res.status}`);
-};
-
-
-
 class Api {
-  constructor({ url, headers }) {
-    this._url = url;
-    this._headers = headers;
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
-  getUser() {
-    return fetch(`${this._url}/users/me`, {
-      headers: this._headers,
-      // body: JSON.stringify()
-    })
-      .then(handleError);
+  _handleRes(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`${res.status} ${res.statusText}`);
+  }
+
+  _getHeaders() {
+    const jwt = localStorage.getItem('jwt');
+    return {
+      'Authorization': `Bearer ${jwt}`,
+      ...this._headers,
+    };
   }
 
   getUserInfo() {
-    return fetch(`${this._url}/users/me`, {
-      headers: this._headers,
-      // body: JSON.stringify()
-    })
-      .then(handleError);
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._getHeaders(),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
-
 
   getInitialCards() {
-    return fetch(`${this._url}/cards`, { headers: this._headers })
-      .then(handleError);
+    return fetch(`${this._baseUrl}/cards`, {
+      headers: this._getHeaders(),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-
-
-  postUser(user){
-    return fetch(`${this._url}/users/me`, {
+  updateUserInfo(data) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify(user)
-    })
-      .then(handleError);
-  }
-  postAvatar(avatar){
-    return fetch(`${this._url}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
-        avatar: avatar
-      })
-    })
-      .then(handleError);
+        name: data.profile_name,
+        about: data.profile_job,
+      }),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-
-  postCreateCard(card) {
-    return fetch(`${this._url}/cards`, {
+  addNewCard(user) {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
-        name: card.name,
-        link: card.link
-      })
-    })
-      .then(handleError);
+        name: user.name,
+        link: user.link,
+      }),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-  deleteCard(id) {
-    return fetch(`${this._url}/cards/${id}`, {
+  removeCard(data) {
+    return fetch(`${this._baseUrl}/cards/${data._id}`, {
       method: 'DELETE',
-      headers: this._headers
-    })
-      .then(handleError);
+      headers: this._getHeaders(),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-  postLike(id) {
-    return fetch(`${this._url}/cards/${id}/likes`, {
+  addCardLike(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: 'PUT',
-      headers: this._headers,
-    })
-      .then(handleError);
+      headers: this._getHeaders(),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-  deleteLike(id) {
-    return fetch(`${this._url}/cards/${id}/likes`, {
+  deleteCardLike(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: 'DELETE',
-      headers: this._headers,
-    })
-      .then(handleError);
+      headers: this._getHeaders(),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
 
-  changeLike(id, like){
-    if(!id) {
-      console.error("Api.changeLike не передан обязательный аргумент cardId. Такой запрос не пройдет.");
-      return;
-    }
-    return fetch(`${this._url}/cards/${id}/likes`, {
-      method: (like ? 'PUT' : 'DELETE'),
-      headers: this._headers
-    })
-      .then(handleError);
+  updateProfileAvatar(data) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._getHeaders(),
+      body: JSON.stringify({
+        avatar: data.avatar,
+      }),
+    }).then((res) => {
+      return this._handleRes(res);
+    });
   }
-
-
 }
 
 const api = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-42",
+  baseUrl: 'https://djonsan.cohort-42.nomoredomains.sbs/',
   headers: {
-  authorization: "92dcfa60-ff6f-412d-a10b-bf414de2b4a6",
-  "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 

@@ -1,89 +1,35 @@
-import React from 'react';
-import { useState } from 'react';
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
+function Register(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-function Register({ handleRegister}) {
-
-  const [registerData, setRegisterData] = useState({ 
-    password: '',
-    email: '',
-  });
-
-  const [message, setMessage] = useState('');
-  const { email, password } = registerData;
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setRegisterData({
-      ...registerData, 
-      [name]: value 
-    });
+  function handleMailInput(evt) {
+    setEmail(evt.target.value);
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    handleRegister(email,password)
-      // .catch((e) => setMessage(e.message))
+
+  function handlePasswordInput(evt) {
+    setPassword(evt.target.value);
+  }
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    props.onRegister(email, password);
   }
 
   return (
-    <div className="sign-up">
-      <form
-        className="form popup__form popup__form_inverse form__sign-up"
-        title='Регистрация'
-        name='form-registration'
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <div className="form__field">
-            <span className="popup__input-error place-title-input-error">
-              {message}
-            </span>
-          </div>
-          <h2 className="page-title popup__page-title  text-overflow text-center">Регистрация</h2>
-          <div className="form__field">
-            <input
-              placeholder="E-mail"
-              id="mail-input"
-              className="popup__input popup__input_mail"
-              name="email"
-              required
-              minLength="2"
-              maxLength="30"
-              value={email || ""}
-              onChange={handleChange}
-            />
-            <span className="popup__input-error place-title-input-error"></span>
-
-          </div>
-          <div className="form__field">
-            <input
-              placeholder="Пароль"
-              id="pass-input"
-              className="popup__input popup__input_pass"
-              name="password"
-              required
-              type="pass"
-              value={password || ""}
-              onChange={handleChange}
-            />
-            <span className="popup__input-error place-title-input-error"></span>
-          </div>
-        </div>
-        <div className="form__field m-0">
-          <button
-            className="popup__btn"
-            name="btn"
-            type="submit"
-          >Зарегистрироваться</button>
-
-          <div className="link text-center">
-            Уже зарегистрированы? <Link to="/sign-in" className="link"> Войти</Link>
-          </div>
-        </div>
-      </form>
-
-    </div>
+    <>
+      <section className="login">
+        <h2 className="login__title">Регистрация</h2>
+        <form className="login__form" onSubmit={handleSubmit}>
+          <input className="login__input" type="email" placeholder="Email" value={email} onChange={handleMailInput} required/>
+          <input className="login__input" type="password" placeholder="Пароль" value={password} autoComplete="on" onChange={handlePasswordInput} required/>
+          <button className="login__btn" type="submit">Зарегистрироваться</button>
+        </form>
+        <p className="login__text">Уже зарегистрированы? <Link to="/signin" className="login__link">Войти</Link> </p>
+      </section>
+    </>
   );
 }
 

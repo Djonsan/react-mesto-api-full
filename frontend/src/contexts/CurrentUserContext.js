@@ -1,16 +1,3 @@
-import React from 'react';
-import avatar from '../images/avatar.jpg';
+import React from "react";
 
-const CurrentUserContext = React.createContext();
-
-// умолчальные данные
-const currentUser = {
-    name: 'Имя пользователя',
-    about: 'О пользователе',
-    avatar: {avatar},
-}; 
-
-// console.log('Provider value = ',CurrentUserContext.value)
-// console.log('currentUser = ',currentUser)
-
-export default CurrentUserContext;
+export const CurrentUserContext = React.createContext();
