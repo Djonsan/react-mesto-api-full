@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.djonsan.cohort-42.nomoredomains.sbs/';
 
 const handleResponse = response => {
 if (response.ok) { 
