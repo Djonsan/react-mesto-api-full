@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.djonsan.cohort-42.nomoredomains.sbs/';
+export const BASE_URL = 'https://api.djonsan.cohort-42.nomoredomains.sbs';
 
 export function registerUser(email, password) {
   return fetch(`${BASE_URL}/signup`, {

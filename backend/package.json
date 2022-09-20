@@ -15,7 +15,7 @@
   "keywords": [
     "yandex-praktikum"
   ],
-  "author": "Igor Stepanov",
+  "author": "Evgeniy Tolochkin",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.7.0",

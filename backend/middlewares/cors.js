@@ -1,5 +1,5 @@
 const allowedCors = [
-  'http://localhost:3000',
+  'http://localhost:3001',
   'http://djonsan.cohort-42.nomoredomains.sbs',
   'https://djonsan.cohort-42.nomoredomains.sbs',
 ];
