@@ -102,7 +102,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://djonsan.cohort-42.nomoredomains.sbs',
+  baseUrl: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
